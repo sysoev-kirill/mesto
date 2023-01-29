@@ -1,0 +1,8 @@
+.popup__name{
+   font-size: 14px;
+   line-height: 17px;
+   width: 100%;
+   border: none;
+   border-bottom: 1px solid gray;
+   background-color: transparent;
+}

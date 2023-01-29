@@ -1,0 +1,15 @@
+.popup__send-btn{
+   background-color: black;
+   font-size: 18px;
+   font-weight: 400;
+   line-height: 22px;
+   color: white;
+   text-align: center;
+   width: 100%;
+   min-height: 50px;
+   border: none;
+}
+
+.popup__send-btn:hover{
+   opacity: 0.59;
+}

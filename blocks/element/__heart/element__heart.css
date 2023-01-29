@@ -1,0 +1,21 @@
+.element__heart{
+   align-self: center;
+   margin-right: 20px;
+   background-image: url(../../../images/heart.svg);
+   background-repeat: no-repeat;
+   background-color: transparent;
+   background-size: contain;  
+   border:none;
+   width: 22px;
+   height: 19px;
+   transition: .3s ease;
+}
+
+.element__heart:hover{
+   opacity: 0.59;
+}
+
+.element__heart:active{
+   background-image: url(../../../images/black-heart.svg);
+   opacity: 100;
+}
