@@ -23,9 +23,9 @@ function closeUserModal() {
 }
 // ----------------------------------------
 
-let form = document.querySelector(".popup__container");
-let inputFormName = document.querySelector('.popup__name');
-let inputFormDescription = document.querySelector('.popup__description');
+let form = document.querySelector(".popup__form");
+let inputFormName = document.querySelector('.popup__profile_name');
+let inputFormDescription = document.querySelector('.popup__profile_description');
 
 
 function editInputFormName(evt) {

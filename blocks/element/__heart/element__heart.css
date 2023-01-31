@@ -9,6 +9,7 @@
    width: 22px;
    height: 19px;
    transition: .3s ease;
+   cursor: pointer;
 }
 
 .element__heart:hover{

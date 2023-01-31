@@ -6,7 +6,6 @@
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Mesto</title>
-   <link rel="stylesheet" href="./vendor/normalize.css">
    <link rel="stylesheet" href="./pages/index.css">
 </head>
 
@@ -16,64 +15,66 @@
       <img class="header__logo" src="./images/logo.svg" alt="Логотип">
    </header>
    <section class="profile">
-      <div class="profile__avatar">
-         <img class="profile__image" src="./images/avatar.jpg" alt="Аватар">
-      </div>
+      <img class="profile__image" src="./images/avatar.jpg" alt="Аватар">
       <div class="profile__profile-info">
-         <h2 class="profile__name">Жак-Ив Кусто</h2>
+         <h1 class="profile__name">Жак-Ив Кусто</h1>
          <button class="profile__edit-bnt">
          </button>
          <p class="profile__description">Исследователь океана</p>
       </div>
-      <button class="profile__add-btn">
+      <button class="profile__add-btn" type="button">
       </button>
    </section>
    <section class="elements">
-      <div class="element">
+      <article class="element">
          <img class="elements__photo" src="./images/Karachevsk.jpg" alt="Карачевск">
          <h2 class="element__city">Карачаевск</h2>
-         <button class="element__heart"></button>
-      </div>
-      <div class="element">
+         <button type="button" class="element__heart"></button>
+      </article>
+      <article class="element">
          <img class="elements__photo" src="./images/Elbrus.jpg" alt="Гора Эльбрус">
          <h2 class="element__city">Гора Эльбрус</h2>
-         <button class="element__heart"></button>
-      </div>
-      <div class="element">
+         <button type="button" class="element__heart"></button>
+      </article>
+      <article class="element">
          <img class="elements__photo" src="./images/Donbuy.png" alt="Домбай">
          <h2 class="element__city">Домбай</h2>
-         <button class="element__heart"></button>
-      </div>
-      <div class="element">
+         <button type="button" class="element__heart"></button>
+      </article>
+      <article class="element">
          <img class="elements__photo" src="./images/Elbrus.jpg" alt="Гора Эльбрус">
          <h2 class="element__city">Гора Эльбрус</h2>
-         <button class="element__heart"></button>
-      </div>
-      <div class="element">
+         <button type="button" class="element__heart"></button>
+      </article>
+      <article class="element">
          <img class="elements__photo" src="./images/Donbuy.png" alt="Домбай">
          <h2 class="element__city">Домбай</h2>
-         <button class="element__heart"></button>
-      </div>
-      <div class="element">
+         <button type="button" class="element__heart"></button>
+      </article>
+      <article class="element">
          <img class="elements__photo" src="./images/Karachevsk.jpg" alt="КарачаевоЧеркесия">
          <h2 class="element__city">Карачаево-Черкесия</h2>
-         <button class="element__heart"></button>
-      </div>
+         <button type="button" class="element__heart"></button>
+      </article>
    </section>
    <footer class="footer">
       <p class="footer__author">© 2020 Mesto Russia</p>
    </footer>
 
-   <section class="popup">
-      <button class="popup__close-btn"></button>
-      <form class="popup__container">
+   <div class="popup">
+      <div class="popup__container">
+         <button type="button" class="popup__close-btn"></button>
          <h2 class="popup__head">Редактировать профиль</h2>
-         <input class="popup__name" type="text" name="name" required placeholder="Имя">
-         <input class="popup__description" type="text" name="description" required placeholder="Статус">
-         <button class="popup__send-btn" id="submit" type="submit">Сохранить</button>
-      </form>
-   </section>
-   <script src="./script.js"></script>
+         <form name="popup__form" class="popup__form">
+            <input id="name" name="name" type="text" class="popup__profile popup__profile_name" required
+               placeholder="Имя">
+            <input id="description" name="description" type="text" class="popup__profile popup__profile_description"
+               required placeholder="Статус">
+            <button type="submit" id="submit" class="popup__send-btn">Сохранить</button>
+         </form>
+      </div>
+   </div>
+   <script src="./scripts/index.js"></script>
 </body>
 
 

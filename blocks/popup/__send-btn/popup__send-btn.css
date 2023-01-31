@@ -7,9 +7,20 @@
    text-align: center;
    width: 100%;
    min-height: 50px;
+   border-radius: 2px;
    border: none;
+   margin-top: 18px;
+   cursor: pointer;
 }
 
 .popup__send-btn:hover{
    opacity: 0.59;
+}
+
+@media(max-width: 618px){
+   .popup__send-btn{
+      min-height: 46px;
+      font-size: 14px;
+      line-height: 17px;
+   }
 }

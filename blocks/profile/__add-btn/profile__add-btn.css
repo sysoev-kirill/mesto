@@ -9,6 +9,7 @@
    width: 150px;
    height: 50px;
    transition: .3s ease;
+   cursor: pointer;
 }
 
 @media(max-width: 920px){
