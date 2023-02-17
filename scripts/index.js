@@ -113,7 +113,7 @@ const initialCards = [
    ['./images/karachevsk.jpg', 'Карачаево-Черкессия'],
    ['./images/elbrus.jpg', 'Алтай'],
    ['./images/Donbuy.png', 'Кабардино-Балкария'],
-   ['./images/elbrus1.jpg', 'Крым'],
+   ['./images/crimea.jpg', 'Крым'],
    ['./images/baikal.jpg', 'Байкал'],
    ['./images/smolensk.jpg', 'Смоленск']
 ];

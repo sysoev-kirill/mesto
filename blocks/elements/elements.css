@@ -7,3 +7,9 @@
    justify-content: left;
    gap: 17px;
 }
+
+@media(max-width: 920px){
+   .elements{
+      justify-content: center;
+   }
+   }
