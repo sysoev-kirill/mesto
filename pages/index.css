@@ -20,18 +20,36 @@
 @import url(../blocks/element/element.css);
 @import url(../blocks/element/__city/element__city.css);
 @import url(../blocks/element/__heart/element__heart.css);
+@import url(../blocks/element/__trash/element__trash.css);
+
 @import url(../blocks/element/__photo/element__photo.css);
 
 @import url(../blocks/footer/footer.css);
 
 @import url(../blocks/popup/popup.css);
 @import url(../blocks/popup/_opened/popup_opened.css);
+/* @import url(../blocks/popup/_opened/popup_opened1.css);
+@import url(../blocks/popup/_opened/popup_opened2.css); */
+
+
 
 @import url(../blocks/popup/__close-btn/popup__close-btn.css);
 @import url(../blocks/popup/__head/popup__head.css);
 @import url(../blocks/popup/__container/popup__container.css);
 @import url(../blocks/popup/__profile/popup__profile.css);
 @import url(../blocks/popup/__send-btn/popup__send-btn.css);
+
+
+/* -------- */
+
+@import url(../blocks/increase-img/increase-img.css);
+@import url(../blocks/increase-img/__photo/increase-img__photo-view.css);
+@import url(../blocks/increase-img/__name/increase-img__name-view.css);
+@import url(../blocks/popup/_mod/popup_mod-dark.css);
+
+
+
+
 
 
 

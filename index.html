@@ -26,42 +26,12 @@
       </button>
    </section>
    <section class="elements">
-      <article class="element">
-         <img class="elements__photo" src="./images/Karachevsk.jpg" alt="Карачевск">
-         <h2 class="element__city">Карачаевск</h2>
-         <button type="button" class="element__heart"></button>
-      </article>
-      <article class="element">
-         <img class="elements__photo" src="./images/Elbrus.jpg" alt="Гора Эльбрус">
-         <h2 class="element__city">Гора Эльбрус</h2>
-         <button type="button" class="element__heart"></button>
-      </article>
-      <article class="element">
-         <img class="elements__photo" src="./images/Donbuy.png" alt="Домбай">
-         <h2 class="element__city">Домбай</h2>
-         <button type="button" class="element__heart"></button>
-      </article>
-      <article class="element">
-         <img class="elements__photo" src="./images/Elbrus.jpg" alt="Гора Эльбрус">
-         <h2 class="element__city">Гора Эльбрус</h2>
-         <button type="button" class="element__heart"></button>
-      </article>
-      <article class="element">
-         <img class="elements__photo" src="./images/Donbuy.png" alt="Домбай">
-         <h2 class="element__city">Домбай</h2>
-         <button type="button" class="element__heart"></button>
-      </article>
-      <article class="element">
-         <img class="elements__photo" src="./images/Karachevsk.jpg" alt="КарачаевоЧеркесия">
-         <h2 class="element__city">Карачаево-Черкесия</h2>
-         <button type="button" class="element__heart"></button>
-      </article>
    </section>
    <footer class="footer">
       <p class="footer__author">© 2020 Mesto Russia</p>
    </footer>
 
-   <div class="popup">
+   <div class="popup popup_open-profile">
       <div class="popup__container">
          <button type="button" class="popup__close-btn"></button>
          <h2 class="popup__head">Редактировать профиль</h2>
@@ -74,6 +44,39 @@
          </form>
       </div>
    </div>
+
+   <div class="popup popup_open-photo">
+      <div class="popup__container">
+         <button type="button" class="popup__close-btn"></button>
+         <h2 class="popup__head"> Новое место</h2>
+         <form name="popup__form" class="popup__form popup__form_photo">
+            <input id="name" name="name" type="text" class="popup__profile popup__profile_add_description" required
+               placeholder="Название">
+            <input id="description" name="description" type="url" class="popup__profile popup__profile_add_photo"
+               required placeholder="Ссылка на картинку">
+            <button type="submit" id="submit" class="popup__send-btn">Создать</button>
+         </form>
+      </div>
+   </div>
+
+   <div class="popup popup_mod-dark">
+      <div class="increase-img">
+         <button type="button" class="popup__close-btn"></button>
+         <img class="increase-img__photo-view" alt="Фотограия места" src="#">
+         <h2 class="increase-img__name-view"></h2>
+         </form>
+      </div>
+   </div>
+
+   <template id="element">
+      <div class="element">
+         <button type="button" class="element__trash"></button>
+         <img class="element__photo" alt="Фотография места" src="">
+         <h2 class="element__city"></h2>
+         <button type="button" class="element__heart"></button>
+      </div>
+   </template>
+
    <script src="./scripts/index.js"></script>
 </body>
 

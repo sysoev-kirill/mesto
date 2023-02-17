@@ -6,6 +6,7 @@
 
 * HTML
 * CSS
+* JavaScript
 ### Используемые методологии
  * БЭМ (Nested)
 

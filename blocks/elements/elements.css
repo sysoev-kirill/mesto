@@ -4,6 +4,6 @@
    padding: 0 19px 0;
    display: flex;
    flex-wrap: wrap;
-   justify-content: center;
+   justify-content: left;
    gap: 17px;
 }
