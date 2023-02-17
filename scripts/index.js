@@ -110,8 +110,8 @@ formPhoto.addEventListener('submit', function (evt) {
 });
 
 const initialCards = [
-   ['./images/karachevsk.jpg', 'Карачаево-Черкессия'],
-   ['./images/elbrus.jpg', 'Алтай'],
+   ['./images/karachaevo.jpg', 'Карачаево-Черкессия'],
+   ['./images/altay.jpg', 'Алтай'],
    ['./images/Donbuy.png', 'Кабардино-Балкария'],
    ['./images/crimea.jpg', 'Крым'],
    ['./images/baikal.jpg', 'Байкал'],
