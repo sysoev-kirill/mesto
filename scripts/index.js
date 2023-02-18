@@ -1,113 +1,117 @@
-let userModalOpenElement = document.querySelector('.profile__edit-bnt');
-let popUpElement = document.querySelector('.popup_open-profile');
-let userModalCloseElement = popUpElement.querySelector('.popup__close-btn');
-let nameProfile = document.querySelector('.profile__name');
-let descriptionProfile = document.querySelector('.profile__description');
+const userModalOpenElement = document.querySelector('.profile__edit-bnt');
+const popUpElement = document.querySelector('.popup_open-profile');
+const nameProfile = document.querySelector('.profile__name');
+const descriptionProfile = document.querySelector('.profile__description');
 
 
-function openUserModal(popup) {
+function openPopup(popup) {
    popup.classList.add('popup_opened');
+   fillProfileInputs();
+
 }
 
-function closeUserModal(popup) {
+function closePopup(popup) {
    popup.classList.remove('popup_opened');
 }
 
-function getProfileName() {
+function fillProfileInputs() {
    inputFormName.value = nameProfile.textContent;
    inputFormDescription.value = descriptionProfile.textContent;
 }
-function handleOpenUserModal() {
-   openUserModal(popup);
-   getProfileName();
-}
+
 
 userModalOpenElement.addEventListener('click', () => {
-   openUserModal(popUpElement);
+   openPopup(popUpElement);
 })
 
-userModalCloseElement.addEventListener('click', () => {
-   closeUserModal(popUpElement);
+const closeButtons = document.querySelectorAll('.popup__close-btn');
+closeButtons.forEach((button) => {
+   const popup = button.closest('.popup');
+   button.addEventListener('click', () => closePopup(popup));
 });
-
 
 
 // --------------------------------------Попап с именем-----------------------
 
-let form = document.querySelector(".popup__form");
-let inputFormName = document.querySelector('.popup__profile_edit_name');
-let inputFormDescription = document.querySelector('.popup__profile_edit_description');
+const profileForm = document.forms["popup__form-profile"];
+const inputFormName = document.querySelector('.popup__profile_edit_name');
+const inputFormDescription = document.querySelector('.popup__profile_edit_description');
 
-
-
-function editInputFormName(evt) {
+function handleProfileSubmit(evt) {
    evt.preventDefault();
    nameProfile.textContent = inputFormName.value;
    descriptionProfile.textContent = inputFormDescription.value;
-   closeUserModal(popUpElement);
+   closePopup(popUpElement);
 }
-form.addEventListener('submit', editInputFormName);
+profileForm.addEventListener('submit', handleProfileSubmit);
 
 
 
 // --------------------------------------Добавление данных для формирования карочки---
 
-let popUpPhoto = document.querySelector('.popup_open-photo');
-let popUpAddPhoto = document.querySelector('.profile__add-btn');
-let userModalCreateElement = popUpPhoto.querySelector('.popup__send-btn');
-let userModalClosePhoto = popUpPhoto.querySelector('.popup__close-btn');
+const popUpPhoto = document.querySelector('.popup_open-photo');
+const popUpAddPhoto = document.querySelector('.profile__add-btn');
+const userModalCreateElement = popUpPhoto.querySelector('.popup__send-btn');
+
 
 popUpAddPhoto.addEventListener('click', () => {
-   openUserModal(popUpPhoto);
-});
-
-userModalClosePhoto.addEventListener('click', () => {
-   closeUserModal(popUpPhoto);
+   openPopup(popUpPhoto);
 });
 
 userModalCreateElement.addEventListener('click', () => {
-   closeUserModal(popUpPhoto);
-})
+   closePopup(popUpPhoto);
+});
+
 
 //------------------------------------- Формирование карточки ---------------
 
-let cardsList = document.querySelector('.elements');
+const cardsList = document.querySelector('.elements');
 
-function addCard(photoValue, nameValue) {
+const cardTemplate = document.querySelector('#element').content;
 
-   let cardTemplate = document.querySelector('#element').content;
+function createCard(photoValue, nameValue) {
+   const cardElement = cardTemplate.querySelector('.element').cloneNode(true);
+   const cardImage = cardElement.querySelector('.element__photo');
+   const cardTitle = cardElement.querySelector('.element__city');
+   const cardLikeButton = cardElement.querySelector('.element__heart');
+   const cardDeleteButton = cardElement.querySelector('.element__trash');
 
-   let cardElement = cardTemplate.querySelector('.element').cloneNode(true);
-   let elementPhoto = cardElement.querySelector('.element__photo');
-   let elementCity = cardElement.querySelector('.element__city');
-   let elementTrash = cardElement.querySelector('.element__trash');
-   let elementHeart = cardElement.querySelector('.element__heart');
+   cardTitle.textContent = nameValue;
+   cardImage.src = photoValue;
+   cardImage.alt = nameValue;
 
-   elementPhoto.src = photoValue;
-   elementCity.textContent = nameValue;
-   elementTrash.addEventListener('click', () => { cardElement.remove(); })
-   elementHeart.addEventListener('click', () => {
-      elementHeart.classList.toggle('element__heart_active');
-   })
-   elementPhoto.addEventListener('click', () => {
-      openUserModalPhoto();
-      getUserModalPhoto(photoValue, nameValue);
-   })
+   cardLikeButton.addEventListener('click', function (evt) {
+      evt.target.classList.toggle('element__heart_active');
+   });
 
+   cardDeleteButton.addEventListener('click', function (evt) {
+      evt.target.closest('.element').remove();
+   });
+
+   cardImage.addEventListener('click', function (evt) {
+      setImagePopupPhoto(photoValue, nameValue);
+   });
+   return cardElement;
+}
+
+function addCard(nameValue, photoValue) {
+   const cardElement = createCard(nameValue, photoValue);
    cardsList.prepend(cardElement);
 }
 
+
 // -------------------------------------формирование карточек по умолчанию----------
 
-let formPhoto = document.querySelector(".popup__form_photo");
-let photo = document.querySelector('.popup__profile_add_photo');
-let description = document.querySelector('.popup__profile_add_description');
+const formPhoto = document.forms["popup__form-photo"];
+const photo = document.querySelector('.popup__profile_add_photo');
+const description = document.querySelector('.popup__profile_add_description');
 formPhoto.addEventListener('submit', function (evt) {
    evt.preventDefault();
    addCard(photo.value, description.value);
-   photo.value = '';
-   description.value = '';
+   evt.target.reset();
+   closePopup(popUpPhoto);
 });
+
 
 const initialCards = [
    ['./images/karachaevo.jpg', 'Карачаево-Черкессия'],
@@ -124,26 +128,17 @@ initialCards.map((item) => {
 
 //------------------------------------Открытие фотограии из карочки-----------
 
-let popupIncreasePhoto = document.querySelector('.popup_mod-dark');
-popupIncreasePhoto.addEventListener('click', openUserModalPhoto)
+const popupIncreasePhoto = document.querySelector('.popup_mod-dark');
 
-function openUserModalPhoto() {
-   popupIncreasePhoto.classList.add('popup_opened');
-}
+popupIncreasePhoto.addEventListener('click', openPopup);
 
-let userModalCloseElementPhoto = popupIncreasePhoto.querySelector('.popup__close-btn');
-userModalCloseElementPhoto.addEventListener('click', () => {
-   closeUserModal(popupIncreasePhoto);
-});
-popupIncreasePhoto.removeEventListener('click', openUserModalPhoto);
+const popupPhotoElement = popupIncreasePhoto.querySelector(".increase-img__photo-view");
+const popupPhotoDescription = popupIncreasePhoto.querySelector(".increase-img__name-view");
 
-
-let popupPhotoElement = popupIncreasePhoto.querySelector(".increase-img__photo-view");
-let popupPhotoDescription = popupIncreasePhoto.querySelector(".increase-img__name-view");
-
-function getUserModalPhoto(photoValue, nameValue) {
-   openUserModalPhoto(popupIncreasePhoto);
+function setImagePopupPhoto(photoValue, nameValue) {
+   openPopup(popupIncreasePhoto);
    popupPhotoElement.src = photoValue;
+   popupPhotoElement.alt = nameValue;
    popupPhotoDescription.textContent = nameValue;
 }
 
