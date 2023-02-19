@@ -1,12 +1,11 @@
-const userModalOpenElement = document.querySelector('.profile__edit-bnt');
-const popUpElement = document.querySelector('.popup_open-profile');
+const profileEditButton = document.querySelector('.profile__edit-bnt');
+const profilePopup = document.querySelector('.popup_open-profile');
 const nameProfile = document.querySelector('.profile__name');
 const descriptionProfile = document.querySelector('.profile__description');
 
 
 function openPopup(popup) {
    popup.classList.add('popup_opened');
-   fillProfileInputs();
 
 }
 
@@ -20,8 +19,10 @@ function fillProfileInputs() {
 }
 
 
-userModalOpenElement.addEventListener('click', () => {
-   openPopup(popUpElement);
+profileEditButton.addEventListener('click', () => {
+   openPopup(profilePopup);
+   fillProfileInputs();
+
 })
 
 const closeButtons = document.querySelectorAll('.popup__close-btn');
@@ -41,7 +42,7 @@ function handleProfileSubmit(evt) {
    evt.preventDefault();
    nameProfile.textContent = inputFormName.value;
    descriptionProfile.textContent = inputFormDescription.value;
-   closePopup(popUpElement);
+   closePopup(profilePopup);
 }
 profileForm.addEventListener('submit', handleProfileSubmit);
 
@@ -50,18 +51,11 @@ profileForm.addEventListener('submit', handleProfileSubmit);
 // --------------------------------------Добавление данных для формирования карочки---
 
 const popUpPhoto = document.querySelector('.popup_open-photo');
-const popUpAddPhoto = document.querySelector('.profile__add-btn');
-const userModalCreateElement = popUpPhoto.querySelector('.popup__send-btn');
+const popUpAddPhotoButton = document.querySelector('.profile__add-btn');
 
-
-popUpAddPhoto.addEventListener('click', () => {
+popUpAddPhotoButton.addEventListener('click', () => {
    openPopup(popUpPhoto);
 });
-
-userModalCreateElement.addEventListener('click', () => {
-   closePopup(popUpPhoto);
-});
-
 
 //------------------------------------- Формирование карточки ---------------
 
@@ -129,8 +123,6 @@ initialCards.map((item) => {
 //------------------------------------Открытие фотограии из карочки-----------
 
 const popupIncreasePhoto = document.querySelector('.popup_mod-dark');
-
-popupIncreasePhoto.addEventListener('click', openPopup);
 
 const popupPhotoElement = popupIncreasePhoto.querySelector(".increase-img__photo-view");
 const popupPhotoDescription = popupIncreasePhoto.querySelector(".increase-img__name-view");
