@@ -48,6 +48,7 @@ profileForm.addEventListener('submit', handleProfileSubmit);
 
 
 
+
 // --------------------------------------Добавление данных для формирования карочки---
 
 const popUpPhoto = document.querySelector('.popup_open-photo');
@@ -133,5 +134,61 @@ function setImagePopupPhoto(photoValue, nameValue) {
    popupPhotoElement.alt = nameValue;
    popupPhotoDescription.textContent = nameValue;
 }
+
+
+
+//-------------------------------------Валидация форм-----------------
+
+const enableValidation = (settings) => {
+   const defaultSettings = {
+      formSelector: '.popup__form',
+      inputSelector: '.popup__profile',
+      submitButtonSelector: '.popup__send-btn',
+      inactiveButtonClass: 'popup__send-btn_inactive',
+      inputErrorClass: 'popup__error',
+      errorClass: 'popup__error_active'
+   };
+
+   const finalSettings = {};
+   for (let prop in defaultSettings) {
+      finalSettings[prop] = settings[prop] || defaultSettings[prop];
+   }
+
+   const forms = document.querySelectorAll(finalSettings.formSelector);
+   forms.forEach((form) => {
+      setEventListeners(form, finalSettings.submitButtonSelector, finalSettings);
+      toggleButtonState(form.querySelector(finalSettings.submitButtonSelector), form.checkValidity(), finalSettings);
+   });
+};
+
+enableValidation({
+   formSelector: '.popup__form',
+   inputSelector: '.popup__profile',
+   submitButtonSelector: '.popup__send-btn',
+   inactiveButtonClass: 'popup__send-btn_inactive',
+   inputErrorClass: 'popup__error',
+   errorClass: 'popup__error_active'
+});
+
+
+// -------------------- Закрытия при  ESC------------------
+function closePopupByEscKey(event) {
+   const popup = document.querySelector('.popup_opened');
+   if (event.key === 'Escape' && popup) {
+      closePopup(popup);
+   }
+}
+
+// ----------------------Закрытие на пустой области экрана--------------
+function closePopupByOverlayClick(event) {
+   const popup = document.querySelector('.popup_opened');
+   if (event.target === popup) {
+      closePopup(popup);
+   }
+}
+
+// ---------------------- обработчики событий на весь документ-----------
+document.addEventListener('keydown', closePopupByEscKey);
+document.addEventListener('click', closePopupByOverlayClick);
 
 

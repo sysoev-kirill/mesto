@@ -13,9 +13,17 @@
    cursor: pointer;
 }
 
-.popup__send-btn:hover{
+.popup__send-btn:hover:enabled{
    opacity: 0.59;
 }
+
+.popup__send-btn:disabled {
+	background-color: white;
+	color: #C4C4C4;
+	border: 1px solid #C4C4C4;
+	cursor: unset;
+}
+
 
 @media(max-width: 618px){
    .popup__send-btn{
@@ -24,3 +32,4 @@
       line-height: 17px;
    }
 }
+
