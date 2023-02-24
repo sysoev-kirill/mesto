@@ -6,11 +6,12 @@ const descriptionProfile = document.querySelector('.profile__description');
 
 function openPopup(popup) {
    popup.classList.add('popup_opened');
-
+   document.addEventListener('keydown', closePopupByEscKey);
 }
 
 function closePopup(popup) {
    popup.classList.remove('popup_opened');
+   document.removeEventListener('keydown', closePopupByEscKey);
 }
 
 function fillProfileInputs() {
@@ -22,7 +23,6 @@ function fillProfileInputs() {
 profileEditButton.addEventListener('click', () => {
    openPopup(profilePopup);
    fillProfileInputs();
-
 })
 
 const closeButtons = document.querySelectorAll('.popup__close-btn');
@@ -46,9 +46,6 @@ function handleProfileSubmit(evt) {
 }
 profileForm.addEventListener('submit', handleProfileSubmit);
 
-
-
-
 // --------------------------------------Добавление данных для формирования карочки---
 
 const popUpPhoto = document.querySelector('.popup_open-photo');
@@ -56,6 +53,7 @@ const popUpAddPhotoButton = document.querySelector('.profile__add-btn');
 
 popUpAddPhotoButton.addEventListener('click', () => {
    openPopup(popUpPhoto);
+   toggleSubmitButtonState(formPhoto, submitButtonPhoto, inactiveButtonClass);
 });
 
 //------------------------------------- Формирование карточки ---------------
@@ -100,10 +98,15 @@ function addCard(nameValue, photoValue) {
 const formPhoto = document.forms["popup__form-photo"];
 const photo = document.querySelector('.popup__profile_add_photo');
 const description = document.querySelector('.popup__profile_add_description');
+
+const submitButtonPhoto = formPhoto.querySelector('.popup__send-btn');
+const inactiveButtonClass = 'popup__send-btn_inactive';
+
 formPhoto.addEventListener('submit', function (evt) {
    evt.preventDefault();
    addCard(photo.value, description.value);
    evt.target.reset();
+   toggleSubmitButtonState(formPhoto, submitButtonPhoto, inactiveButtonClass);
    closePopup(popUpPhoto);
 });
 
@@ -135,46 +138,10 @@ function setImagePopupPhoto(photoValue, nameValue) {
    popupPhotoDescription.textContent = nameValue;
 }
 
-
-
-//-------------------------------------Валидация форм-----------------
-
-const enableValidation = (settings) => {
-   const defaultSettings = {
-      formSelector: '.popup__form',
-      inputSelector: '.popup__profile',
-      submitButtonSelector: '.popup__send-btn',
-      inactiveButtonClass: 'popup__send-btn_inactive',
-      inputErrorClass: 'popup__error',
-      errorClass: 'popup__error_active'
-   };
-
-   const finalSettings = {};
-   for (let prop in defaultSettings) {
-      finalSettings[prop] = settings[prop] || defaultSettings[prop];
-   }
-
-   const forms = document.querySelectorAll(finalSettings.formSelector);
-   forms.forEach((form) => {
-      setEventListeners(form, finalSettings.submitButtonSelector, finalSettings);
-      toggleButtonState(form.querySelector(finalSettings.submitButtonSelector), form.checkValidity(), finalSettings);
-   });
-};
-
-enableValidation({
-   formSelector: '.popup__form',
-   inputSelector: '.popup__profile',
-   submitButtonSelector: '.popup__send-btn',
-   inactiveButtonClass: 'popup__send-btn_inactive',
-   inputErrorClass: 'popup__error',
-   errorClass: 'popup__error_active'
-});
-
-
 // -------------------- Закрытия при  ESC------------------
 function closePopupByEscKey(event) {
-   const popup = document.querySelector('.popup_opened');
-   if (event.key === 'Escape' && popup) {
+   if (event.key === 'Escape') {
+      const popup = document.querySelector('.popup_opened');
       closePopup(popup);
    }
 }
@@ -187,8 +154,7 @@ function closePopupByOverlayClick(event) {
    }
 }
 
-// ---------------------- обработчики событий на весь документ-----------
-document.addEventListener('keydown', closePopupByEscKey);
-document.addEventListener('click', closePopupByOverlayClick);
+// ---------------------- обработчик событий на весь документ-----------
 
+document.addEventListener('click', closePopupByOverlayClick);
 

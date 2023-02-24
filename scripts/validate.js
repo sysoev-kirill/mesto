@@ -1,25 +1,63 @@
 //--------------------Проверка полей-----------------
 
-const checkInputValidity = (input) => {
-   const errorElement = input.nextElementSibling;
-   errorElement.textContent = input.validationMessage;
-   errorElement.classList.toggle('popup__error_active', !input.validity.valid);
+const checkInputValidity = (inputSelector) => {
+   const errorElement = inputSelector.nextElementSibling;
+   errorElement.textContent = inputSelector.validationMessage;
+   errorElement.classList.toggle( inputSelector.errorClass, !inputSelector.validity.valid);
 }
 
+//_______переключение кнопки 
+function toggleSubmitButtonState(formSelector, submitButtonSelector, inactiveButtonClass) {
+   if (!formSelector.checkValidity()) {
+      submitButtonSelector.classList.add(inactiveButtonClass);
+      submitButtonSelector.disabled = true;
+   } else {
+      submitButtonSelector.classList.remove(inactiveButtonClass);
+      submitButtonSelector.disabled = false;
+   }
+}
 
-
-const setEventListeners = (form, buttonSelector, settings) => {
-   form.addEventListener('input', (event) => {
+const setEventListeners = (formSelector, buttonSelector, settings, inactiveButtonClass) => {
+   formSelector.addEventListener('input', (event) => {
       checkInputValidity(event.target, settings);
-      toggleButtonState(form.querySelector(buttonSelector), form.checkValidity(), settings);
+      toggleSubmitButtonState(formSelector, formSelector.querySelector(buttonSelector), inactiveButtonClass);
    });
-   form.addEventListener('submit', (evt) => {
+   formSelector.addEventListener('submit', (evt) => {
       evt.preventDefault();
    });
 };
 
-//----------------------переключение кнопки -------------------
-const toggleButtonState = (button, isActive, settings) => {
-   button.disabled = !isActive;
-   button.classList.toggle(settings.inactiveButtonClass, !isActive);
+
+//-------------------------------------Валидация форм-----------------
+
+const enableValidation = (settings) => {
+   const defaultSettings = {
+      formSelector: '.popup__form',
+      inputSelector: '.popup__profile',
+      submitButtonSelector: '.popup__send-btn',
+      inactiveButtonClass: 'popup__send-btn_inactive',
+      inputErrorClass: 'popup__error',
+      errorClass: 'popup__error_active'
+   };
+
+   const finalSettings = {};
+   for (let prop in defaultSettings) {
+      finalSettings[prop] = settings[prop] || defaultSettings[prop];
+   }
+
+   const forms = document.querySelectorAll(finalSettings.formSelector);
+   forms.forEach((form) => {
+      setEventListeners(form, finalSettings.submitButtonSelector, finalSettings);
+      toggleSubmitButtonState(form, form.querySelector(finalSettings.submitButtonSelector), finalSettings.inactiveButtonClass );
+   });
 };
+
+enableValidation({
+   formSelector: '.popup__form',
+   inputSelector: '.popup__profile',
+   submitButtonSelector: '.popup__send-btn',
+   inactiveButtonClass: 'popup__send-btn_inactive',
+   inputErrorClass: 'popup__error',
+   errorClass: 'popup__error_active'
+});
+
