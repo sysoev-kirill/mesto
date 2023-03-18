@@ -1,18 +1,24 @@
+import { FormValidator } from "./validate.js";
+import { Card } from "./card.js";
+
 const profileEditButton = document.querySelector('.profile__edit-bnt');
 const profilePopup = document.querySelector('.popup_open-profile');
 const nameProfile = document.querySelector('.profile__name');
 const descriptionProfile = document.querySelector('.profile__description');
 
 
-function openPopup(popup) {
-   popup.classList.add('popup_opened');
+
+function openPopup({ classList }) {
+   classList.add('popup_opened');
    document.addEventListener('keydown', closePopupByEscKey);
 }
 
-function closePopup(popup) {
-   popup.classList.remove('popup_opened');
+function closePopup({ classList }) {
+   classList.remove('popup_opened');
    document.removeEventListener('keydown', closePopupByEscKey);
 }
+
+
 
 function fillProfileInputs() {
    inputFormName.value = nameProfile.textContent;
@@ -38,6 +44,7 @@ const profileForm = document.forms["popup__form-profile"];
 const inputFormName = document.querySelector('.popup__profile_edit_name');
 const inputFormDescription = document.querySelector('.popup__profile_edit_description');
 
+
 function handleProfileSubmit(evt) {
    evt.preventDefault();
    nameProfile.textContent = inputFormName.value;
@@ -51,47 +58,34 @@ profileForm.addEventListener('submit', handleProfileSubmit);
 const popUpPhoto = document.querySelector('.popup_open-photo');
 const popUpAddPhotoButton = document.querySelector('.profile__add-btn');
 
+const validatorProfileForm = new FormValidator({
+   formSelector: '.popup__form',
+   inputSelector: '.popup__profile',
+   submitButtonSelector: '.popup__send-btn',
+   inactiveButtonClass: 'popup__send-btn_inactive',
+   inputErrorClass: 'popup__error',
+   errorClass: 'popup__error_active'
+}, profileForm);
+
+
 popUpAddPhotoButton.addEventListener('click', () => {
    openPopup(popUpPhoto);
-   toggleSubmitButtonState(formPhoto, submitButtonPhoto, inactiveButtonClass);
+   validatorProfileForm.enableValidation();
 });
 
 //------------------------------------- Формирование карточки ---------------
 
 const cardsList = document.querySelector('.elements');
 
-const cardTemplate = document.querySelector('#element').content;
-
 function createCard(photoValue, nameValue) {
-   const cardElement = cardTemplate.querySelector('.element').cloneNode(true);
-   const cardImage = cardElement.querySelector('.element__photo');
-   const cardTitle = cardElement.querySelector('.element__city');
-   const cardLikeButton = cardElement.querySelector('.element__heart');
-   const cardDeleteButton = cardElement.querySelector('.element__trash');
-
-   cardTitle.textContent = nameValue;
-   cardImage.src = photoValue;
-   cardImage.alt = nameValue;
-
-   cardLikeButton.addEventListener('click', function (evt) {
-      evt.target.classList.toggle('element__heart_active');
-   });
-
-   cardDeleteButton.addEventListener('click', function (evt) {
-      evt.target.closest('.element').remove();
-   });
-
-   cardImage.addEventListener('click', function (evt) {
-      setImagePopupPhoto(photoValue, nameValue);
-   });
-   return cardElement;
+   const card = new Card(photoValue, nameValue);
+   return card.generateCard();
 }
 
-function addCard(nameValue, photoValue) {
-   const cardElement = createCard(nameValue, photoValue);
-   cardsList.prepend(cardElement);
+function addCard(photoValue, nameValue) {
+   const card = createCard(photoValue, nameValue);
+   cardsList.prepend(card);
 }
-
 
 // -------------------------------------формирование карточек по умолчанию----------
 
@@ -99,14 +93,22 @@ const formPhoto = document.forms["popup__form-photo"];
 const photo = document.querySelector('.popup__profile_add_photo');
 const description = document.querySelector('.popup__profile_add_description');
 
-const submitButtonPhoto = formPhoto.querySelector('.popup__send-btn');
-const inactiveButtonClass = 'popup__send-btn_inactive';
+
+const validatorFormPhoto = new FormValidator({
+   formSelector: '.popup__form',
+   inputSelector: '.popup__profile',
+   submitButtonSelector: '.popup__send-btn',
+   inactiveButtonClass: 'popup__send-btn_inactive',
+   inputErrorClass: 'popup__error',
+   errorClass: 'popup__error_active'
+}, formPhoto);
+
 
 formPhoto.addEventListener('submit', function (evt) {
    evt.preventDefault();
    addCard(photo.value, description.value);
    evt.target.reset();
-   toggleSubmitButtonState(formPhoto, submitButtonPhoto, inactiveButtonClass);
+   validatorFormPhoto.enableValidation();
    closePopup(popUpPhoto);
 });
 
@@ -157,4 +159,5 @@ function closePopupByOverlayClick(event) {
 // ---------------------- обработчик событий на весь документ-----------
 
 document.addEventListener('click', closePopupByOverlayClick);
+
 

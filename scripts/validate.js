@@ -1,58 +1,50 @@
-//--------------------Проверка полей-----------------
 
-const checkInputValidity = (inputSelector) => {
-   const errorElement = inputSelector.nextElementSibling;
-   errorElement.textContent = inputSelector.validationMessage;
-   errorElement.classList.toggle( inputSelector.errorClass, !inputSelector.validity.valid);
-}
+export class FormValidator {
+   constructor(settings) {
+      this._formSelector = settings.formSelector;
+      this._inputSelector = settings.inputSelector;
+      this._submitButtonSelector = settings.submitButtonSelector;
+      this._inactiveButtonClass = settings.inactiveButtonClass;
+      this._inputErrorClass = settings.inputErrorClass;
+      this._errorClass = settings.errorClass;
+   }
 
-//_______переключение кнопки 
-function toggleSubmitButtonState(formSelector, submitButtonSelector, inactiveButtonClass) {
-   if (!formSelector.checkValidity()) {
-      submitButtonSelector.classList.add(inactiveButtonClass);
-      submitButtonSelector.disabled = true;
-   } else {
-      submitButtonSelector.classList.remove(inactiveButtonClass);
-      submitButtonSelector.disabled = false;
+   _checkInputValidity(inputSelector) {
+      const errorElement = inputSelector.nextElementSibling;
+      errorElement.textContent = inputSelector.validationMessage;
+      errorElement.classList.toggle(this._inputErrorClass, !inputSelector.validity.valid);
+   }
+
+   _toggleSubmitButtonState(formSelector, submitButtonSelector) {
+      if (!formSelector.checkValidity()) {
+         submitButtonSelector.classList.add(this._inactiveButtonClass);
+         submitButtonSelector.disabled = true;
+      } else {
+         submitButtonSelector.classList.remove(this._inactiveButtonClass);
+         submitButtonSelector.disabled = false;
+      }
+   }
+
+   _setEventListeners(formSelector, buttonSelector) {
+      formSelector.addEventListener('input', (event) => {
+         this._checkInputValidity(event.target);
+         this._toggleSubmitButtonState(formSelector, formSelector.querySelector(buttonSelector));
+      });
+      formSelector.addEventListener('submit', (evt) => {
+         evt.preventDefault();
+      });
+   }
+
+   enableValidation() {
+      const forms = document.querySelectorAll(this._formSelector);
+      forms.forEach((form) => {
+         this._setEventListeners(form, this._submitButtonSelector);
+         this._toggleSubmitButtonState(form, form.querySelector(this._submitButtonSelector));
+      });
    }
 }
 
-const setEventListeners = (formSelector, buttonSelector, settings, inactiveButtonClass) => {
-   formSelector.addEventListener('input', (event) => {
-      checkInputValidity(event.target, settings);
-      toggleSubmitButtonState(formSelector, formSelector.querySelector(buttonSelector), inactiveButtonClass);
-   });
-   formSelector.addEventListener('submit', (evt) => {
-      evt.preventDefault();
-   });
-};
-
-
-//-------------------------------------Валидация форм-----------------
-
-const enableValidation = (settings) => {
-   const defaultSettings = {
-      formSelector: '.popup__form',
-      inputSelector: '.popup__profile',
-      submitButtonSelector: '.popup__send-btn',
-      inactiveButtonClass: 'popup__send-btn_inactive',
-      inputErrorClass: 'popup__error',
-      errorClass: 'popup__error_active'
-   };
-
-   const finalSettings = {};
-   for (let prop in defaultSettings) {
-      finalSettings[prop] = settings[prop] || defaultSettings[prop];
-   }
-
-   const forms = document.querySelectorAll(finalSettings.formSelector);
-   forms.forEach((form) => {
-      setEventListeners(form, finalSettings.submitButtonSelector, finalSettings);
-      toggleSubmitButtonState(form, form.querySelector(finalSettings.submitButtonSelector), finalSettings.inactiveButtonClass );
-   });
-};
-
-enableValidation({
+const validator = new FormValidator({
    formSelector: '.popup__form',
    inputSelector: '.popup__profile',
    submitButtonSelector: '.popup__send-btn',
@@ -60,4 +52,9 @@ enableValidation({
    inputErrorClass: 'popup__error',
    errorClass: 'popup__error_active'
 });
+
+validator.enableValidation();
+
+
+
 
