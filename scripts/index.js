@@ -1,6 +1,8 @@
 import { FormValidator } from "./validate.js";
 import { Card } from "./card.js";
 
+
+
 const profileEditButton = document.querySelector('.profile__edit-bnt');
 const profilePopup = document.querySelector('.popup_open-profile');
 const nameProfile = document.querySelector('.profile__name');
@@ -133,7 +135,7 @@ const popupIncreasePhoto = document.querySelector('.popup_mod-dark');
 const popupPhotoElement = popupIncreasePhoto.querySelector(".increase-img__photo-view");
 const popupPhotoDescription = popupIncreasePhoto.querySelector(".increase-img__name-view");
 
-function setImagePopupPhoto(photoValue, nameValue) {
+export function setImagePopupPhoto(photoValue, nameValue) {
    openPopup(popupIncreasePhoto);
    popupPhotoElement.src = photoValue;
    popupPhotoElement.alt = nameValue;

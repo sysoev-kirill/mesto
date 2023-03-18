@@ -1,5 +1,5 @@
 
-
+import { setImagePopupPhoto } from "./index.js";
 export class Card {
    constructor(photoValue, nameValue) {
       this._nameValue = nameValue;
