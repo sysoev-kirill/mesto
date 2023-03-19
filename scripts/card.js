@@ -1,5 +1,4 @@
 
-
 export class Card {
    constructor(photoValue, nameValue, templateSelector, handleCardClick) {
       this._nameValue = nameValue;
@@ -19,13 +18,21 @@ export class Card {
       return cardElement;
    }
 
+   _toggleLike() {
+      this._likeButton.classList.toggle('element__heart_active');
+   }
+
+   _deleteCard() {
+      this._element.remove();
+   }
+
    _setEventListeners() {
       this._likeButton.addEventListener('click', () => {
-         this._likeButton.classList.toggle('element__heart_active');
+         this._toggleLike();
       });
 
       this._trashButton.addEventListener('click', () => {
-         this._element.remove();
+         this._deleteCard();
       });
 
       this._photo.addEventListener('click', () => {

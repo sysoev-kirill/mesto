@@ -1,4 +1,3 @@
-
 export class FormValidator {
    constructor(settings, form) {
       this._form = form;
@@ -29,6 +28,26 @@ export class FormValidator {
       }
    }
 
+   activateSubmitButton() {
+      const submitButtonSelector = this._form.querySelector(this._submitButtonSelector);
+      submitButtonSelector.classList.remove(this._inactiveButtonClass);
+      submitButtonSelector.disabled = false;
+   }
+
+   deactivateSubmitButton() {
+      const submitButtonSelector = this._form.querySelector(this._submitButtonSelector);
+      submitButtonSelector.classList.add(this._inactiveButtonClass);
+      submitButtonSelector.disabled = true;
+   }
+
+   clearErrors() {
+      const errorElements = this._form.querySelectorAll(`.${this._inputErrorClass}`);
+      errorElements.forEach((errorElement) => {
+         errorElement.textContent = '';
+         errorElement.classList.remove(this._inputErrorClass);
+      });
+   }
+
    _setEventListeners() {
       this._form.addEventListener('input', (event) => {
          this._checkInputValidity(event.target);
@@ -41,8 +60,7 @@ export class FormValidator {
 
    enableValidation() {
       this._setEventListeners();
-      this._toggleSubmitButtonState();
+      this.deactivateSubmitButton();
    }
 
 }
-

@@ -74,6 +74,7 @@ validatorProfileForm.enableValidation();
 
 popUpAddPhotoButton.addEventListener('click', () => {
    openPopup(popUpPhoto);
+   validatorFormPhoto.deactivateSubmitButton()
 
 })
 //------------------------------------- Формирование карточки ---------------
@@ -115,6 +116,7 @@ formPhoto.addEventListener('submit', function (evt) {
    closePopup(popUpPhoto);
 });
 
+validatorFormPhoto.activateSubmitButton();
 
 const initialCards = [
    ['./images/karachaevo.jpg', 'Карачаево-Черкессия'],
