@@ -69,18 +69,19 @@ const validatorProfileForm = new FormValidator({
    errorClass: 'popup__error_active'
 }, profileForm);
 
+validatorProfileForm.enableValidation();
+
 
 popUpAddPhotoButton.addEventListener('click', () => {
    openPopup(popUpPhoto);
-   validatorProfileForm.enableValidation();
-});
 
+})
 //------------------------------------- Формирование карточки ---------------
 
 const cardsList = document.querySelector('.elements');
 
 function createCard(photoValue, nameValue) {
-   const card = new Card(photoValue, nameValue);
+   const card = new Card(photoValue, nameValue, '#element', handleCardClick);
    return card.generateCard();
 }
 
@@ -105,12 +106,12 @@ const validatorFormPhoto = new FormValidator({
    errorClass: 'popup__error_active'
 }, formPhoto);
 
+validatorFormPhoto.enableValidation();
 
 formPhoto.addEventListener('submit', function (evt) {
    evt.preventDefault();
    addCard(photo.value, description.value);
    evt.target.reset();
-   validatorFormPhoto.enableValidation();
    closePopup(popUpPhoto);
 });
 
@@ -135,7 +136,8 @@ const popupIncreasePhoto = document.querySelector('.popup_mod-dark');
 const popupPhotoElement = popupIncreasePhoto.querySelector(".increase-img__photo-view");
 const popupPhotoDescription = popupIncreasePhoto.querySelector(".increase-img__name-view");
 
-export function setImagePopupPhoto(photoValue, nameValue) {
+
+function handleCardClick(photoValue, nameValue) {
    openPopup(popupIncreasePhoto);
    popupPhotoElement.src = photoValue;
    popupPhotoElement.alt = nameValue;

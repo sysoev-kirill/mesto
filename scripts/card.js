@@ -1,37 +1,42 @@
 
-import { setImagePopupPhoto } from "./index.js";
+
 export class Card {
-   constructor(photoValue, nameValue) {
+   constructor(photoValue, nameValue, templateSelector, handleCardClick) {
       this._nameValue = nameValue;
       this._photoValue = photoValue;
+      this._templateSelector = templateSelector;
+      this._element = this._getTemplate();
+      this._likeButton = this._element.querySelector('.element__heart');
+      this._trashButton = this._element.querySelector('.element__trash');
+      this._photo = this._element.querySelector('.element__photo');
+      this._handleCardClick = handleCardClick;
+
    }
 
    _getTemplate() {
-      const cardTemplate = document.querySelector('#element').content;
+      const cardTemplate = document.querySelector(this._templateSelector).content;
       const cardElement = cardTemplate.querySelector('.element').cloneNode(true);
       return cardElement;
    }
 
    _setEventListeners() {
-      this._element.querySelector('.element__heart').addEventListener('click', () => {
-         this._element.querySelector('.element__heart').classList.toggle('element__heart_active');
+      this._likeButton.addEventListener('click', () => {
+         this._likeButton.classList.toggle('element__heart_active');
       });
 
-      this._element.querySelector('.element__trash').addEventListener('click', () => {
+      this._trashButton.addEventListener('click', () => {
          this._element.remove();
       });
 
-      this._element.querySelector('.element__photo').addEventListener('click', () => {
-         setImagePopupPhoto(this._photoValue, this._nameValue);
+      this._photo.addEventListener('click', () => {
+         this._handleCardClick(this._photoValue, this._nameValue);
       });
    }
 
    generateCard() {
-      this._element = this._getTemplate();
       this._element.querySelector('.element__city').textContent = this._nameValue;
-      this._element.querySelector('.element__photo').src = this._photoValue;
-
-      this._element.querySelector('.element__photo').alt = this._nameValue;
+      this._photo.src = this._photoValue;
+      this._photo.alt = this._nameValue;
       this._setEventListeners();
       return this._element;
    }
