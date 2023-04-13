@@ -6,16 +6,16 @@
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Mesto</title>
-   <link rel="stylesheet" href="./pages/index.css">
+   <!-- <link rel="stylesheet" href="./pages/index.css"> -->
 </head>
 
 <body class="page">
 
    <header class="header">
-      <img class="header__logo" src="./images/logo.svg" alt="Логотип">
+      <img class="header__logo" src="<%=require('./images/logo.svg')%>" alt="Логотип">
    </header>
    <section class="profile">
-      <img class="profile__image" src="./images/avatar.jpg" alt="Аватар">
+      <img class="profile__image" src="<%=require('./images/avatar.jpg')%>" alt="Аватар">
       <div class="profile__profile-info">
          <h1 class="profile__name">Кусто</h1>
          <button class="profile__edit-bnt" type="button">
@@ -88,7 +88,7 @@
       </div>
    </template>
 
-   <script defer src="./scripts/index.js" type="module"></script>
+   <!-- <script defer src="./scripts/index.js" type="module"></script> -->
 
 
 
