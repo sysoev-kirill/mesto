@@ -14,12 +14,10 @@ import baikal from '../images/baikal.jpg';
 import smolensk from '../images/smolensk.jpg'
 
 
-
-
 const profileEditButton = document.querySelector('.profile__edit-bnt');
 const profilePopup = document.querySelector('.popup_open-profile');
-const nameProfile = document.querySelector('.profile__name');
-const descriptionProfile = document.querySelector('.profile__description');
+// const nameProfile = document.querySelector('.profile__name');
+// const descriptionProfile = document.querySelector('.profile__description');
 
 
 const userInfo = new UserInfo({
@@ -29,22 +27,27 @@ const userInfo = new UserInfo({
 
 
 
-const profilePopupForm = new PopupWithForm(profilePopup);
+const profilePopupForm = new PopupWithForm(profilePopup, () => {
+   userInfo.setUserInfo({
+      name: inputFormName.value,
+      about: inputFormDescription.value
+   });
+   profilePopupForm.closePopup();
+})
 profilePopupForm.setEventListeners();
 
 function fillProfileInputs() {
 
-   inputFormName.value = nameProfile.textContent;
-   inputFormDescription.value = descriptionProfile.textContent;
+   const infoObject = userInfo.getUserInfo();
+   inputFormName.value = infoObject.name;
+   inputFormDescription.value = infoObject.about;
 }
 
 
 profileEditButton.addEventListener('click', () => {
-   userInfo.getUserInfo();
+
    fillProfileInputs();
-
    profilePopupForm.openPopup();
-
 
 })
 
@@ -55,21 +58,16 @@ const inputFormName = document.querySelector('.popup__profile_edit_name');
 const inputFormDescription = document.querySelector('.popup__profile_edit_description');
 
 
-function handleProfileSubmit(evt) {
-   evt.preventDefault();
-   nameProfile.textContent = inputFormName.value;
-   descriptionProfile.textContent = inputFormDescription.value;
-   userInfo.setUserInfo({ nameProfile, descriptionProfile });
-   profilePopupForm.closePopup()
-}
-profileForm.addEventListener('submit', handleProfileSubmit);
-
 // --------------------------------------Добавление данных для формирования карочки---
 
 const popUpPhoto = document.querySelector('.popup_open-photo');
 const popUpAddPhotoButton = document.querySelector('.profile__add-btn');
 
-const popupAddCard = new PopupWithForm(popUpPhoto);
+const popupAddCard = new PopupWithForm(popUpPhoto, () => {
+   const elemData = createCard(photo.value, description.value);
+   cardsList.addItem(elemData);
+   popupAddCard.closePopup()
+});
 popupAddCard.setEventListeners();
 
 const validatorProfileForm = new FormValidator({
@@ -97,14 +95,12 @@ const popupPhotoElement = popupIncreasePhoto.querySelector(".increase-img__photo
 const popupPhotoDescription = popupIncreasePhoto.querySelector(".increase-img__name-view");
 
 const popupWithImage = new PopupWithImage(popupIncreasePhoto);
-popupWithImage.setEventListeners();
 
 function handleCardClick(photoValue, nameValue) {
-   popupWithImage.openPopup();
-   popupPhotoElement.src = photoValue;
-   popupPhotoElement.alt = nameValue;
-   popupPhotoDescription.textContent = nameValue;
+   popupWithImage.openPopup(photoValue, nameValue);
+
 }
+popupWithImage.setEventListeners();
 //------------------------------------- Формирование карточки ---------------
 
 const initialCards = [
@@ -119,9 +115,8 @@ const initialCards = [
 const cardsList = new Section({
    items: initialCards,
    renderer: (item) => {
-      const card = new Card(item[0], item[1], "#element", handleCardClick);
-      const cardElement = card.generateCard();
-      return cardElement;
+      const elem = createCard(item[0], item[1]);
+      return elem;
    }
 }, ".elements");
 
@@ -149,12 +144,6 @@ const validatorFormPhoto = new FormValidator({
 }, formPhoto);
 
 validatorFormPhoto.enableValidation();
-
-formPhoto.addEventListener('submit', function (evt) {
-   evt.preventDefault();
-   cardsList.addItem(createCard(photo.value, description.value));
-   popupAddCard.closePopup()
-});
 
 validatorFormPhoto.activateSubmitButton();
 
