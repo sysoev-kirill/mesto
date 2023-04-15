@@ -16,8 +16,8 @@ import smolensk from '../images/smolensk.jpg'
 
 const profileEditButton = document.querySelector('.profile__edit-bnt');
 const profilePopup = document.querySelector('.popup_open-profile');
-// const nameProfile = document.querySelector('.profile__name');
-// const descriptionProfile = document.querySelector('.profile__description');
+const nameProfile = document.querySelector('.profile__name');
+const descriptionProfile = document.querySelector('.profile__description');
 
 
 const userInfo = new UserInfo({
@@ -25,15 +25,13 @@ const userInfo = new UserInfo({
    aboutSelector: '.profile__description'
 });
 
-
-
-const profilePopupForm = new PopupWithForm(profilePopup, () => {
+const profilePopupForm = new PopupWithForm(profilePopup, (inputValues) => {
    userInfo.setUserInfo({
-      name: inputFormName.value,
-      about: inputFormDescription.value
+      name: inputValues.name,
+      about: inputValues.description
    });
    profilePopupForm.closePopup();
-})
+});
 profilePopupForm.setEventListeners();
 
 function fillProfileInputs() {
@@ -43,12 +41,9 @@ function fillProfileInputs() {
    inputFormDescription.value = infoObject.about;
 }
 
-
 profileEditButton.addEventListener('click', () => {
-
    fillProfileInputs();
    profilePopupForm.openPopup();
-
 })
 
 // --------------------------------------Попап с именем-----------------------
@@ -63,11 +58,12 @@ const inputFormDescription = document.querySelector('.popup__profile_edit_descri
 const popUpPhoto = document.querySelector('.popup_open-photo');
 const popUpAddPhotoButton = document.querySelector('.profile__add-btn');
 
-const popupAddCard = new PopupWithForm(popUpPhoto, () => {
-   const elemData = createCard(photo.value, description.value);
+const popupAddCard = new PopupWithForm(popUpPhoto, (inputValues) => {
+   const elemData = createCard(inputValues.description, inputValues.name);
    cardsList.addItem(elemData);
    popupAddCard.closePopup()
 });
+
 popupAddCard.setEventListeners();
 
 const validatorProfileForm = new FormValidator({
