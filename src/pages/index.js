@@ -145,7 +145,7 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
    })
 
 
-const popupDeleteCard = document.querySelector('.popup__delete'),
+const popupDeleteCard = document.querySelector('.popup_delete'),
    popupConfirmation = new PopupWithConfirm(popupDeleteCard);
 
 popupConfirmation.setEventListeners();
@@ -194,7 +194,7 @@ function createCard(elem) {
 const popupAvatar = document.querySelector('.popup__form_avatar')
 const avatarIcon = document.querySelector('.profile__image');
 
-const popupAvatarEdit = document.querySelector('.popup__edit-avatar')
+const popupAvatarEdit = document.querySelector('.popup_edit-avatar')
 
 const openPopupAvatarForm = new PopupWithForm(popupAvatarEdit, (data) => {
    openPopupAvatarForm.isSavingMessage("Сохранение...");
