@@ -1,11 +1,11 @@
-.popup__send-btn{
+.popup__send-btn {
    background-color: black;
    font-size: 18px;
    font-weight: 400;
    line-height: 22px;
    color: white;
    text-align: center;
-   width: 100%;
+   width: 358px;
    min-height: 50px;
    border-radius: 2px;
    border: none;
@@ -13,23 +13,22 @@
    cursor: pointer;
 }
 
-.popup__send-btn:hover:enabled{
+.popup__send-btn:hover:enabled {
    opacity: 0.59;
 }
 
 .popup__send-btn:disabled {
-	background-color: white;
-	color: #C4C4C4;
-	border: 1px solid #C4C4C4;
-	cursor: unset;
+   background-color: white;
+   color: #c4c4c4;
+   border: 1px solid #c4c4c4;
+   cursor: unset;
 }
 
-
-@media(max-width: 618px){
-   .popup__send-btn{
+@media (max-width: 618px) {
+   .popup__send-btn {
       min-height: 46px;
       font-size: 14px;
       line-height: 17px;
+      width: 238px;
    }
 }
-

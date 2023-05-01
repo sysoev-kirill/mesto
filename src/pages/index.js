@@ -1,17 +1,19 @@
 
 import '../pages/index.css';
+import Api from '../scripts/api.js';
 import { FormValidator } from "../scripts/validate.js";
 import Section from "../scripts/section.js";
 import { Card } from "../scripts/card.js";
 import PopupWithForm from "../scripts/popupWithForm.js";
 import PopupWithImage from "../scripts/popupWithImage.js";
+import PopupWithConfirm from '../scripts/popupWithConfirm';
 import UserInfo from "../scripts/userInfo.js";
-import karachaevo from '../images/karachaevo.jpg';
-import altay from '../images/altay.jpg';
-import donbuy from '../images/Donbuy.png';
-import crimea from '../images/crimea.jpg';
-import baikal from '../images/baikal.jpg';
-import smolensk from '../images/smolensk.jpg'
+// import karachaevo from '../images/karachaevo.jpg';
+// import altay from '../images/altay.jpg';
+// import donbuy from '../images/Donbuy.png';
+// import crimea from '../images/crimea.jpg';
+// import baikal from '../images/baikal.jpg';
+// import smolensk from '../images/smolensk.jpg'
 
 
 const profileEditButton = document.querySelector('.profile__edit-bnt');
@@ -19,23 +21,38 @@ const profilePopup = document.querySelector('.popup_open-profile');
 const nameProfile = document.querySelector('.profile__name');
 const descriptionProfile = document.querySelector('.profile__description');
 
+const api = new Api({
+   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-64',
+   headers: {
+      authorization: '22daa57c-a1b8-4d9c-9a76-1d146d442b74',
+      'Content-Type': 'application/json'
+   }
+});
 
 const userInfo = new UserInfo({
    nameSelector: '.profile__name',
-   aboutSelector: '.profile__description'
+   aboutSelector: '.profile__description',
+   avatarSelector: '.profile__image'
 });
 
-const profilePopupForm = new PopupWithForm(profilePopup, (inputValues) => {
-   userInfo.setUserInfo({
-      name: inputValues.name,
-      about: inputValues.description
-   });
-   profilePopupForm.closePopup();
+
+const profilePopupForm = new PopupWithForm(profilePopup, (dataProfile) => {
+   profilePopupForm.isSavingMessage("Сохранение...");
+   api.updateUserProfileInfo(dataProfile)
+      .then((result) =>
+         userInfo.setUserInfo({ name: result.name, about: result.about, avatar: result.avatar }))
+
+      .catch((err) => console.log(err))
+      .finally(() => {
+         profilePopupForm.isSavingMessage("Сохранить");
+         profilePopupForm.closePopup();
+      })
+
 });
+
 profilePopupForm.setEventListeners();
 
 function fillProfileInputs() {
-
    const infoObject = userInfo.getUserInfo();
    inputFormName.value = infoObject.name;
    inputFormDescription.value = infoObject.about;
@@ -59,9 +76,18 @@ const popUpPhoto = document.querySelector('.popup_open-photo');
 const popUpAddPhotoButton = document.querySelector('.profile__add-btn');
 
 const popupAddCard = new PopupWithForm(popUpPhoto, (inputValues) => {
-   const elemData = createCard(inputValues.description, inputValues.name);
-   cardsList.addItem(elemData);
-   popupAddCard.closePopup()
+   popupAddCard.isSavingMessage("Сохранение...");
+   api.addNewCard(inputValues)
+      .then((res) => {
+         const elemData = createCard(res);
+         cardsList.addItem(elemData);
+      })
+      .catch((err) => console.log(err))
+      .finally(() => {
+         popupAddCard.isSavingMessage("Сохранить");
+         popupAddCard.closePopup()
+      })
+
 });
 
 popupAddCard.setEventListeners();
@@ -92,38 +118,116 @@ const popupPhotoDescription = popupIncreasePhoto.querySelector(".increase-img__n
 
 const popupWithImage = new PopupWithImage(popupIncreasePhoto);
 
-function handleCardClick(photoValue, nameValue) {
-   popupWithImage.openPopup(photoValue, nameValue);
+// function handleCardClick(photoValue, nameValue) {
+//    popupWithImage.openPopup(photoValue, nameValue);
 
-}
+// }
 popupWithImage.setEventListeners();
 //------------------------------------- Формирование карточки ---------------
 
-const initialCards = [
-   [karachaevo, 'Карачаево-Черкессия'],
-   [altay, 'Алтай'],
-   [donbuy, 'Кабардино-Балкария'],
-   [crimea, 'Крым'],
-   [baikal, 'Байкал'],
-   [smolensk, 'Смоленск']
-];
-
 const cardsList = new Section({
-   items: initialCards,
-   renderer: (item) => {
-      const elem = createCard(item[0], item[1]);
-      return elem;
+   renderer: (elem) => {
+      cardsList.addItem(createCard(elem));
    }
 }, ".elements");
 
-cardsList.renderItems();
+let userId;
 
-function createCard(photoValue, nameValue) {
-   const card = new Card(photoValue, nameValue, '#element', handleCardClick);
+Promise.all([api.getUserInfo(), api.getInitialCards()])
+   .then(([userData, initCard]) => {
+      userId = userData._id;
+      userInfo.setUserInfo({ name: userData.name, about: userData.about, id: userData._id, avatar: userData.avatar });
+      cardsList.renderItems(initCard);
+
+   })
+   .catch((err) => {
+      console.log(err);
+   })
+
+
+const popupDeleteCard = document.querySelector('.popup__delete'),
+   popupConfirmation = new PopupWithConfirm(popupDeleteCard);
+
+popupConfirmation.setEventListeners();
+
+function createCard(elem) {
+   const card = new Card({
+      data: elem,
+      templateSelector: '#element',
+      userId: userInfo.getUserInfo(),
+      handleCardClick: (name, link) => {
+         popupWithImage.openPopup(name, link)
+      },
+      handleAddLike: (cardId) => {
+         api.addCardLike(cardId)
+            .then((res) => {
+               card.renderCardLike(res)
+            })
+            .catch((err) => console.log(err));
+      },
+      handleDeleteLike: (cardId) => {
+         api.deleteCardLike(cardId)
+            .then((res) => {
+               card.renderCardLike(res);
+
+            })
+            .catch(err => console.log(err));
+      },
+      handleDeleteCard: () => {
+         const openDeleteCard = (cardId) => {
+            return api.deleteCardById(cardId)
+               .then(() => {
+                  card.deleteCard();
+                  popupConfirmation.closePopup();
+               })
+               .catch((err) => console.log(err));
+         }
+         popupConfirmation.openPopup();
+         popupConfirmation.handleCheckConfirm(openDeleteCard);
+
+      }
+   })
    return card.generateCard();
 }
 
-// -------------------------------------формирование карточек по умолчанию----------
+
+const popupAvatar = document.querySelector('.popup__form_avatar')
+const avatarIcon = document.querySelector('.profile__image');
+
+const popupAvatarEdit = document.querySelector('.popup__edit-avatar')
+
+const openPopupAvatarForm = new PopupWithForm(popupAvatarEdit, (data) => {
+   openPopupAvatarForm.isSavingMessage("Сохранение...");
+   api.editAvatarUser(data)
+      .then(() => {
+         userInfo.setUserAvatar(data)
+         openPopupAvatarForm.closePopup();
+      })
+      .catch((err) => console.log(err))
+      .finally(() => {
+         openPopupAvatarForm.isSavingMessage("Сохранить");
+      })
+
+});
+
+openPopupAvatarForm.setEventListeners()
+
+const validatorAvatarForm = new FormValidator({
+   formSelector: '.popup__form',
+   inputSelector: '.popup__profile',
+   submitButtonSelector: '.popup__send-btn',
+   inactiveButtonClass: 'popup__send-btn_inactive',
+   inputErrorClass: 'popup__error',
+   errorClass: 'popup__error_active'
+}, popupAvatar);
+
+
+avatarIcon.addEventListener("click", () => {
+   validatorAvatarForm.enableValidation();
+   openPopupAvatarForm.openPopup();
+   // 
+});
+
 
 const formPhoto = document.forms["popup__form-photo"];
 const photo = document.querySelector('.popup__profile_add_photo');

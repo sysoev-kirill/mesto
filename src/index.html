@@ -6,7 +6,7 @@
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Mesto</title>
-   <!-- <link rel="stylesheet" href="./pages/index.css"> -->
+
 </head>
 
 <body class="page">
@@ -15,7 +15,10 @@
       <img class="header__logo" src="<%=require('./images/logo.svg')%>" alt="Логотип">
    </header>
    <section class="profile">
-      <img class="profile__image" src="<%=require('./images/avatar.jpg')%>" alt="Аватар">
+      <div class="profile__image-container">
+        <img class="profile__image" src="<%=require('./images/avatar.jpg')%>" alt="Аватар">
+        <img class="profile__image-edit" src="<%=require('./images/Pencil.svg')%>" alt="Редактировать">
+      </div>
       <div class="profile__profile-info">
          <h1 class="profile__name">Кусто</h1>
          <button class="profile__edit-bnt" type="button">
@@ -71,10 +74,35 @@
       </div>
    </div>
 
+   <div class="popup popup__delete">
+      <div class="popup__container">
+         <button type="button" class="popup__close-btn"></button>
+         <h2 class="popup__head">Вы уверены?</h2>
+         <form class="popup__form popup__form_delete" name="popup__form-delete" novalidate>
+            <button type="submit" id="submit" class="popup__send-btn">Да</button>
+          </form>
+      </div>
+   </div>
+
+   <div class="popup popup__edit-avatar">
+      <div class="popup__container">
+         <button type="button" class="popup__close-btn"></button>
+         <h2 class="popup__head">Обновить аватар</h2>
+         <form name="popup__form-avatar" id="avatar-edit" class="popup__form popup__form_avatar" novalidate>
+            <label class="popup__label">
+               <input id="avatar__photo" name="link" type="url"
+                  class="popup__profile popup__profile_add_photo" required placeholder="Ссылка на аватар">
+               <span class="popup__error" id="profile_photo_about-error"></span>
+            </label>
+            <button type="submit" id="submit__photo-avatar" class="popup__send-btn">Сохранить</button>
+         </form>
+      </div>
+   </div>
+
    <div class="popup popup_mod-dark">
       <div class="increase-img">
          <button type="button" class="popup__close-btn"></button>
-         <img class="increase-img__photo-view" alt="Фотограия места" src="#">
+         <img class="increase-img__photo-view" alt="Фотография места" src="#">
          <h2 class="increase-img__name-view"></h2>
       </div>
    </div>
@@ -84,11 +112,13 @@
          <button type="button" class="element__trash"></button>
          <img class="element__photo" alt="Фотография места" src="#">
          <h2 class="element__city"></h2>
-         <button type="button" class="element__heart"></button>
+         <div class="element__heart-container">
+            <button type="button" class="element__heart"></button>
+            <span class="element__like-count"></span>
+         </div>
       </div>
    </template>
 
-   <!-- <script defer src="./scripts/index.js" type="module"></script> -->
 
 
 

@@ -1,6 +1,4 @@
 .element__heart{
-   align-self: center;
-   margin-right: 20px;
    background-image: url(../../../images/heart.svg);
    background-repeat: no-repeat;
    background-color: transparent;
