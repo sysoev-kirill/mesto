@@ -38,10 +38,9 @@ export default class PopupWithForm extends Popup {
 		this._form.reset();
 	}
 
-	isSavingMessage(loading){
+	isSavingMessage(loading) {
 		this._submitButton.textContent = loading;
-	
+
 	}
 }
-
 

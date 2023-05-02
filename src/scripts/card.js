@@ -1,5 +1,3 @@
-
-
 export class Card {
    constructor({ data, templateSelector, handleCardClick, userId, handleAddLike, handleDeleteLike, handleDeleteCard }) {
       this._data = data;
@@ -18,6 +16,7 @@ export class Card {
       this._handleDeleteLike = handleDeleteLike;
       this._handleDeleteCard = handleDeleteCard;
       this._userId = userId;
+
    }
 
    _getTemplate() {
@@ -28,7 +27,9 @@ export class Card {
 
    deleteCard() {
       this._element.remove();
+      this._element = null;
    }
+
 
    generateCard() {
       this._element.querySelector('.element__city').textContent = this._nameValue;
@@ -38,26 +39,37 @@ export class Card {
       if (this._ownerId !== this._userId.id) {
          this._trashButton.remove();
       };
+
       this._countLikes = this._element.querySelector('.element__like-count');
       this._countLikes.textContent = this._likes.length;
 
-      this._likes.filter((like) => like._id === this._userId)
-  
+      this.initLikes();
       this._setEventListeners();
       return this._element;
    }
-
 
    toggleLike() {
       this._likeButton.classList.toggle('element__heart_active');
    }
 
-   renderCardLike(data) {
-      this._countLikes.textContent = data.likes.length;
-      
-      this.toggleLike()
+   isLiked() {
+      return this._likes.find((like) => like._id === this._userId.id)
    }
 
+   initLikes() {
+      if (this.isLiked()) {
+         this._likeButton.classList.add('element__heart_active');
+      } else {
+         this._likeButton.classList.remove('element__heart_active');
+      }
+
+   }
+
+   renderCardLike(data) {
+      this._countLikes.textContent = data.likes.length;
+      this.toggleLike()
+
+   }
 
    _setEventListeners() {
       this._likeButton.addEventListener('click', () => {
@@ -72,7 +84,7 @@ export class Card {
       });
 
       this._trashButton.addEventListener('click', () => {
-         this._handleDeleteCard();
+         this._handleDeleteCard(this._cardId, this);
       });
 
       this._photo.addEventListener('click', () => {

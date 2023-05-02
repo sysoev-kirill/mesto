@@ -1,5 +1,4 @@
 
-
 export default class UserInfo {
 	constructor({ nameSelector, aboutSelector, avatarSelector }) {
 		this._name = document.querySelector(nameSelector);
@@ -21,6 +20,5 @@ export default class UserInfo {
 	setUserAvatar(avatar) {
 		this._avatar.src = avatar.link;
 	}
-
 
 }

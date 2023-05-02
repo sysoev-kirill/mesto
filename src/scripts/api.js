@@ -1,5 +1,5 @@
 export default class Api {
-	constructor( {baseUrl, headers} ) {
+	constructor({ baseUrl, headers }) {
 		this._baseUrl = baseUrl;
 		this._headers = headers;
 	}
@@ -53,7 +53,7 @@ export default class Api {
 	addCardLike(cardId) {
 		return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
 			method: "PUT",
-         headers: this._headers,
+			headers: this._headers,
 		}).then(this._onRes)
 	}
 
@@ -75,4 +75,3 @@ export default class Api {
 			.then(this._getResponseData);
 	}
 }
-
